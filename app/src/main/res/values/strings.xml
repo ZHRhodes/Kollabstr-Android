@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Kollabstr</string>
+    <string name="app_version">pre-release</string>
+
+    <!--Login -->
+    <string name="login_title">Login</string>
+    <string name="login_email_hint">E-mail</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_button">Login</string>
+    <string name="facebook_button">Login with Facebook</string>
+
 </resources>
