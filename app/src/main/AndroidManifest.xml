@@ -23,6 +23,7 @@
         </activity>
 
         <service android:name="com.backendless.AndroidService"/>
+        <service android:name=".login.LoginService"/>
 
     </application>
 

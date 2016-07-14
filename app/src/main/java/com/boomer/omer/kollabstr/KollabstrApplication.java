@@ -3,6 +3,7 @@ package com.boomer.omer.kollabstr;
 import android.app.Application;
 
 import com.boomer.omer.kollabstr.backend.BackEndlessCore;
+import com.boomer.omer.kollabstr.core.ServiceManager;
 
 /**
  * Created by Omer on 7/12/2016.
@@ -15,6 +16,7 @@ public class KollabstrApplication extends Application {
         super.onCreate();
 
         BackEndlessCore.initialize(this);
+        ServiceManager.initialize(this);
 
 
     }

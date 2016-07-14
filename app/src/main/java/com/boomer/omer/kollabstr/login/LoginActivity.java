@@ -12,12 +12,16 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.boomer.omer.kollabstr.R;
+import com.boomer.omer.kollabstr.core.ComponentBus;
 import com.boomer.omer.kollabstr.core.KollabstrActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Omer on 7/12/2016.
  */
-public class LoginActivity extends KollabstrActivity implements View.OnClickListener{
+public class LoginActivity extends KollabstrActivity implements View.OnClickListener,ComponentBus.Listener{
 
     private EditText emailField;
     private EditText passwordField;
@@ -36,6 +40,8 @@ public class LoginActivity extends KollabstrActivity implements View.OnClickList
 
         loginButton.setOnClickListener(this);
         facebookButton.setOnClickListener(this);
+
+        getComponentBus().subscribeToComponent("loginService",this);
     }
 
     @Override
@@ -49,25 +55,11 @@ public class LoginActivity extends KollabstrActivity implements View.OnClickList
                 }
 
                 Log.d("TEST","LOGGING IN");
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Backendless.UserService.login(email.toString(), password.toString(), new AsyncCallback<BackendlessUser>() {
-                            @Override
-                            public void handleResponse(BackendlessUser response) {
-                                Log.d("RESPONSE","Successful");
-                                finish();
-                            }
 
-                            @Override
-                            public void handleFault(BackendlessFault fault) {
-                                Log.d("RESPONSE",fault.toString());
-                            }
-                        });
-
-                    }
-                });
-                thread.start();
+                Bundle bundle = new Bundle();
+                bundle.putString(LoginService.E_MAIL,email.toString());
+                bundle.putString(LoginService.PASSWORD,password.toString());
+                getServiceManager().startService(LoginService.class,bundle);
 
                 break;
 
@@ -76,4 +68,15 @@ public class LoginActivity extends KollabstrActivity implements View.OnClickList
                 break;
         }
     }
+
+    @Override
+    public void receiveMessage(Bundle bundle) {
+        finish();
+    }
+
+    @Override
+    public void receiveMessage(Object object) {
+
+    }
+
 }
