@@ -12,8 +12,6 @@ import com.boomer.omer.kollabstr.analytics.AnswersManager;
 import com.boomer.omer.kollabstr.core.ComponentBus;
 import com.boomer.omer.kollabstr.core.KollabstrActivity;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Omer on 7/12/2016.
@@ -70,6 +68,7 @@ public class LoginActivity extends KollabstrActivity implements View.OnClickList
 
     @Override
     public void receiveMessage(Bundle bundle) {
+        AnswersManager.reportLogin(AnswersManager.METHOD_BACKENDLESS);
         finish();
     }
 
@@ -80,16 +79,13 @@ public class LoginActivity extends KollabstrActivity implements View.OnClickList
 
     @Override
     public String getTag() {
-        return TAG;
+        return "LoginActivity";
     }
 
     @Override
     public String getType() {
-        return AnswersManager.TYPE_ACTIVITY;
+        return TypeActivity;
     }
 
-    @Override
-    public String getID() {
-        return "";
-    }
+
 }

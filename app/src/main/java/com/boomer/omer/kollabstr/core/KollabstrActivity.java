@@ -8,19 +8,17 @@ import com.boomer.omer.kollabstr.analytics.AnswersManager;
 /**
  * Created by Omer on 7/12/2016.
  */
-public abstract class KollabstrActivity extends Activity implements ComponentBus.Listener,AnswersManager.Trackable{
+public abstract class KollabstrActivity extends Activity implements ComponentBus.Listener,AnswersManager.TrackableView {
 
     private ComponentBus mComponentBus;
     private ServiceManager mServiceManager;
-    private AnswersManager mAnswerManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mComponentBus = ComponentBus.getsInstance();
         mServiceManager = ServiceManager.getInstance();
-        mAnswerManager  = AnswersManager.track(this);
-        mAnswerManager.log();
+        AnswersManager.reportContentView(this);
 
     }
 
