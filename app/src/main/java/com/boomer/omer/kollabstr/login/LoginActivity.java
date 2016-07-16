@@ -7,11 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.backendless.Backendless;
-import com.backendless.BackendlessUser;
-import com.backendless.async.callback.AsyncCallback;
-import com.backendless.exceptions.BackendlessFault;
 import com.boomer.omer.kollabstr.R;
+import com.boomer.omer.kollabstr.analytics.AnswersManager;
 import com.boomer.omer.kollabstr.core.ComponentBus;
 import com.boomer.omer.kollabstr.core.KollabstrActivity;
 
@@ -22,6 +19,8 @@ import java.util.List;
  * Created by Omer on 7/12/2016.
  */
 public class LoginActivity extends KollabstrActivity implements View.OnClickListener,ComponentBus.Listener{
+
+    private static final String TAG = LoginActivity.class.getName();
 
     private EditText emailField;
     private EditText passwordField;
@@ -79,4 +78,18 @@ public class LoginActivity extends KollabstrActivity implements View.OnClickList
 
     }
 
+    @Override
+    public String getTag() {
+        return TAG;
+    }
+
+    @Override
+    public String getType() {
+        return AnswersManager.TYPE_ACTIVITY;
+    }
+
+    @Override
+    public String getID() {
+        return "";
+    }
 }

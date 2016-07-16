@@ -25,6 +25,9 @@
         <service android:name="com.backendless.AndroidService"/>
         <service android:name=".login.LoginService"/>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="83e8868b0e984bfb9f7092db828552cc0cf2ade5" />
     </application>
 
 
