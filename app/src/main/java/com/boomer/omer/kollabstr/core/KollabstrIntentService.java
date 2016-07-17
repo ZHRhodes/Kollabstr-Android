@@ -12,10 +12,12 @@ public abstract class KollabstrIntentService extends IntentService {
 
     protected KollabstrIntentService(String name) {
         super(name);
-        mComponentBus = ComponentBus.getsInstance();
     }
 
     protected ComponentBus getComponentBus(){
+        if(mComponentBus == null){
+            mComponentBus = ComponentBus.getsInstance();
+        }
         return mComponentBus;
     }
 

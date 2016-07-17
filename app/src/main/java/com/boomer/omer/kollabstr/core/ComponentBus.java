@@ -76,6 +76,7 @@ public class ComponentBus {
     }
 
 
+
     private class ListenerWrapper{
         WeakReference<Listener> reference;
         long threadID;

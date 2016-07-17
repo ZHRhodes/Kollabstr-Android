@@ -22,14 +22,12 @@ public class BackEndlessCore {
             isInitialized = true;
             sContext = context;
             sInstance = new BackEndlessCore();
-            Backendless.initApp(context,BackEndlessSettings.APP_ID,BackEndlessSettings.SECRET_KEY, ResourceManager.getString(sContext, R.string.app_version));
+            Backendless.initApp(context,ResourceManager.getInstance().getBackEndlessAppID(),ResourceManager.getInstance().getBackendlessAppSecret(), ResourceManager.getInstance().getString(R.string.app_version));
         }
     }
 
     public static BackEndlessCore getsInstance(){
-        if(!isInitialized){
-            throw new RuntimeException(TAG + "" + " has not been initialized.");
-        }
+        if(!isInitialized){throw new RuntimeException(TAG + "" + " has not been initialized.");}
         return  sInstance;
     }
 

@@ -16,19 +16,21 @@ public abstract class KollabstrActivity extends Activity implements ComponentBus
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mComponentBus = ComponentBus.getsInstance();
-        mServiceManager = ServiceManager.getInstance();
         AnswersManager.reportContentView(this);
 
     }
 
 
     protected ComponentBus getComponentBus(){
+        if(mComponentBus == null){
+            mComponentBus = ComponentBus.getsInstance();
+        }
         return mComponentBus;
     }
-
     protected ServiceManager getServiceManager(){
-        return mServiceManager;
-    }
+        if(mServiceManager == null){
+            mServiceManager = ServiceManager.getInstance();
+        }
+        return mServiceManager;}
 
 }

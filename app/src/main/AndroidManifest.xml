@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data android:name="io.fabric.ApiKey" android:value="83e8868b0e984bfb9f7092db828552cc0cf2ade5" />
+
         <activity
             android:name=".login.LoginActivity"
             android:label="@string/login_title">
@@ -22,12 +25,13 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.backendless.AndroidService"/>
-        <service android:name=".login.LoginService"/>
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+        <service android:name=".login.BackendlessLoginService"/>
 
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="83e8868b0e984bfb9f7092db828552cc0cf2ade5" />
+
     </application>
 
 

@@ -2,6 +2,18 @@
     <string name="app_name">Kollabstr</string>
     <string name="app_version">v1</string>
 
+    <!--Backendless-->
+    <string name="backendless_ap_id">B6435B05-1C70-4E04-FF8C-8EF1CA65DE00</string>
+    <string name="backendless_scret_key">CE4F8933-EE32-8DED-FFD0-135B28196300</string>
+
+    <!--Facebook-->
+    <string name="facebook_app_id">1827712697458936</string>
+
+    <!--Twitter-->
+    <string name="twitter_key">0fARaCyfrLoOpA4U2rJavUzqQ</string>
+    <string name="twitter_secret">YmqxSyK3rdEqTeAy0QvCm0c8Y82QvysgOrq5VzUU5lCRDrdtnI</string>
+
+
     <!--Login -->
     <string name="login_title">Login</string>
     <string name="login_email_hint">E-mail</string>

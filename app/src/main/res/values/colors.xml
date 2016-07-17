@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="kollabstr_salmon">#EC958E</color>
+    <color name="kollabstr_orange">#FCC18B</color>
+    <color name="kollabstr_white">#F5F5F6</color>
+
 </resources>

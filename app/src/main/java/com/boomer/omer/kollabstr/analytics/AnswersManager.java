@@ -26,13 +26,14 @@ public class AnswersManager {
         if(context!=null){
             sIsInitialized = true;
             Answers.getInstance().logCustom(
-                    new CustomEvent("App Launch").putCustomAttribute(APP_VERSION, ResourceManager.getString(context, R.string.app_version)));
+                    new CustomEvent("App Launch").putCustomAttribute(APP_VERSION, ResourceManager.getInstance().getString(R.string.app_version)));
         }
 
     }
 
     public static final String METHOD_BACKENDLESS = "Backendless";
     public static final String METHOD_FACEBOOK    = "Facebook";
+    public static final String METHOD_TWITTER     = "Twitter";
 
     public static void reportContentView(TrackableView trackable){
         Answers.getInstance().logContentView(new ContentViewEvent()

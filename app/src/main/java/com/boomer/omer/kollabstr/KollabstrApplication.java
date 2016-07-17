@@ -4,10 +4,10 @@ import android.app.Application;
 
 import com.boomer.omer.kollabstr.analytics.AnswersManager;
 import com.boomer.omer.kollabstr.backend.BackEndlessCore;
+import com.boomer.omer.kollabstr.backend.SessionManager;
+import com.boomer.omer.kollabstr.core.ResourceManager;
 import com.boomer.omer.kollabstr.core.ServiceManager;
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.answers.Answers;
-import io.fabric.sdk.android.Fabric;
+import com.facebook.FacebookSdk;
 
 /**
  * Created by Omer on 7/12/2016.
@@ -15,14 +15,22 @@ import io.fabric.sdk.android.Fabric;
 public class KollabstrApplication extends Application {
 
 
+
+
+
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Answers(), new Crashlytics());
 
-        BackEndlessCore.initialize(this);
+        //Locals
+        ResourceManager.initialize(this);
         ServiceManager.initialize(this);
+
+        //APIs
+        BackEndlessCore.initialize(this);
+        SessionManager.initialize(this);
         AnswersManager.initialize(this);
+        FacebookSdk.sdkInitialize(this);
 
 
     }

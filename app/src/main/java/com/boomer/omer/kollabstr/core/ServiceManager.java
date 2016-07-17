@@ -9,7 +9,7 @@ import android.os.Bundle;
  */
 public class ServiceManager {
 
-    private static final String TAG = ServiceManager.class.getName();
+    private static final String TAG = ServiceManager.class.getSimpleName();
 
     private static ServiceManager sServiceManager;
     private static Context sContext;
@@ -24,6 +24,7 @@ public class ServiceManager {
         if(!isInitialized){throw new RuntimeException(TAG + " has not been initialized.");}
         if(sServiceManager == null){
             sServiceManager = new ServiceManager();
+            isInitialized = true;
         }
 
         return  sServiceManager;
