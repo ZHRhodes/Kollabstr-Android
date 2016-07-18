@@ -34,6 +34,7 @@ public class AnswersManager {
     public static final String METHOD_BACKENDLESS = "Backendless";
     public static final String METHOD_FACEBOOK    = "Facebook";
     public static final String METHOD_TWITTER     = "Twitter";
+    public static final String METHOD_GOOGLE      = "Google";
 
     public static void reportContentView(TrackableView trackable){
         Answers.getInstance().logContentView(new ContentViewEvent()
@@ -54,7 +55,19 @@ public class AnswersManager {
                 .putMethod(METHOD_FACEBOOK)
                 .putSuccess(true));
                 break;
+            case METHOD_TWITTER:
+                Answers.getInstance().logLogin(new LoginEvent()
+                        .putMethod(METHOD_TWITTER)
+                        .putSuccess(true));
+                break;
+            case METHOD_GOOGLE:
+                Answers.getInstance().logLogin(new LoginEvent()
+                        .putMethod(METHOD_GOOGLE)
+                        .putSuccess(true));
+                break;
+
         }
+
     }
 
     public interface TrackableView {

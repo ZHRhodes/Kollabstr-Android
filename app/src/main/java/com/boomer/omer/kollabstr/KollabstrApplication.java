@@ -14,10 +14,6 @@ import com.facebook.FacebookSdk;
  */
 public class KollabstrApplication extends Application {
 
-
-
-
-
     @Override
     public void onCreate() {
         super.onCreate();

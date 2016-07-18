@@ -16,20 +16,34 @@
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data android:name="io.fabric.ApiKey" android:value="83e8868b0e984bfb9f7092db828552cc0cf2ade5" />
 
-        <activity
-            android:name=".login.LoginActivity"
-            android:label="@string/login_title">
+        <activity android:name=".applaunch.StartScreen"
+            android:label="@string/app_launch_start_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <activity android:name=".applaunch.SplashScreen"
+            android:label="@string/app_launch_splash_title">
+        </activity>
+
+        <activity
+            android:name=".login.LoginActivity"
+            android:label="@string/login_title">
+        </activity>
+
+        <activity android:name=".profile.SetupProfileActivity"
+            android:label="@string/setup_profile_label">
+        </activity>
+
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name" />
-        <service android:name=".login.BackendlessLoginService"/>
+
+
+
 
 
     </application>

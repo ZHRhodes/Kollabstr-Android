@@ -13,6 +13,13 @@
     <string name="twitter_key">0fARaCyfrLoOpA4U2rJavUzqQ</string>
     <string name="twitter_secret">YmqxSyK3rdEqTeAy0QvCm0c8Y82QvysgOrq5VzUU5lCRDrdtnI</string>
 
+    <!--AppLaunch-->
+    <string name="app_launch_start_title">Start</string>
+    <string name="app_launch_splash_title">Splash</string>
+
+    <!--SetupProfile-->
+    <string name="setup_profile_label">Setup Profile</string>
+
 
     <!--Login -->
     <string name="login_title">Login</string>

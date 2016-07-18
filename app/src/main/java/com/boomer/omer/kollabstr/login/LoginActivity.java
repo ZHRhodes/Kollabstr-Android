@@ -7,30 +7,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-
 import com.boomer.omer.kollabstr.R;
-import com.boomer.omer.kollabstr.analytics.AnswersManager;
 import com.boomer.omer.kollabstr.backend.SessionManager;
-import com.boomer.omer.kollabstr.core.ComponentBus;
 import com.boomer.omer.kollabstr.core.KollabstrActivity;
-import com.boomer.omer.kollabstr.customviews.KollabstrFacebookButton;
+import com.boomer.omer.kollabstr.profile.SetupProfileActivity;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
 
 
 /**
  * Created by Omer on 7/12/2016.
  */
-public class LoginActivity extends KollabstrActivity implements View.OnClickListener,ComponentBus.Listener{
+public class LoginActivity extends KollabstrActivity implements View.OnClickListener{
 
     private static final String TAG = LoginActivity.class.getSimpleName();
-
-    private EditText emailField;
-    private EditText passwordField;
-    private Button loginButton;
-    private KollabstrFacebookButton facebookButton;
 
     private CallbackManager mCallbackManager;
 
@@ -38,6 +27,7 @@ public class LoginActivity extends KollabstrActivity implements View.OnClickList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mCallbackManager.onActivityResult(requestCode,resultCode,data);
+
     }
 
     @Override
@@ -45,65 +35,16 @@ public class LoginActivity extends KollabstrActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        emailField = (EditText)findViewById(R.id.activity_login_email_edittext);
-        passwordField  = (EditText)findViewById(R.id.activity_login_password_edittext);
-        loginButton    = (Button)findViewById(R.id.activity_login_login_button);
+        ((Button)findViewById(R.id.login_button)).setOnClickListener(this);
+        ((Button)findViewById(R.id.facebook_login)).setOnClickListener(this);
+        ((Button)findViewById(R.id.twitter_login)).setOnClickListener(this);
 
-        facebookButton = (KollabstrFacebookButton) findViewById(R.id.activity_login_facebook_button);
-        mCallbackManager = CallbackManager.Factory.create();
-        facebookButton.registerCallback(mCallbackManager,getFacebookCallBack() );
-
-        loginButton.setOnClickListener(this);
-
-        getComponentBus().subscribeToComponent(SessionManager.ACTION,this);
+        getComponentBus().subscribeToComponent(SessionManager.LOGIN_SUCCESS,this);
     }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.activity_login_login_button:
-                doBackEndlessLogin();
-                break;
-        }
-    }
-
-    private FacebookCallback<LoginResult> getFacebookCallBack(){
-        return new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                getSessionManager().receiveFacebookLoginResult(loginResult);
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                getSessionManager().receiveFacebookLoginError(error);
-            }
-        };
-    }
-
-    private void doBackEndlessLogin(){
-        Editable email = emailField.getText();
-        Editable password = passwordField.getText();
-        if(email.length() == 0 || password.length() == 0){
-            //Todo: Handle it
-            return;
-        }
-        getSessionManager().loginWithBackendless(email.toString(),password.toString());
-    }
-
-    private SessionManager getSessionManager(){
-        return SessionManager.getInstance();
-    }
-
 
     @Override
     public void receiveMessage(Bundle bundle) {
-        finish();
+        startSettingUpProfile();
     }
 
     @Override
@@ -111,9 +52,43 @@ public class LoginActivity extends KollabstrActivity implements View.OnClickList
 
     }
 
+    private void startSettingUpProfile(){
+        startActivity(new Intent(this, SetupProfileActivity.class));
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.login_button:
+                String email = ((EditText)findViewById(R.id.login_email_edittext)).getText().toString();
+                String password = ((EditText)findViewById(R.id.login_password_edittext)).getText().toString();
+                getSessionManager().loginWithBackendless(email,password);
+                break;
+
+            case R.id.facebook_login:
+                getSessionManager().loginWithFacebook(this,getCallbackManager());
+                break;
+
+            case R.id.twitter_login:
+                getSessionManager().loginWithTwitter(this);
+                break;
+
+            default:
+                //Todo: nothing for now
+                break;
+        }
+    }
+
+    private CallbackManager getCallbackManager(){
+        if(mCallbackManager == null){
+            mCallbackManager = CallbackManager.Factory.create();
+        }
+        return mCallbackManager;
+    }
+
     @Override
     public String getTag() {
-        return "LoginActivity";
+        return TAG;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.boomer.omer.kollabstr.core;
 
 import android.app.IntentService;
-import android.content.Intent;
 
 /**
  * Created by Omer on 7/13/2016.
@@ -16,7 +15,7 @@ public abstract class KollabstrIntentService extends IntentService {
 
     protected ComponentBus getComponentBus(){
         if(mComponentBus == null){
-            mComponentBus = ComponentBus.getsInstance();
+            mComponentBus = ComponentBus.getInstance();
         }
         return mComponentBus;
     }

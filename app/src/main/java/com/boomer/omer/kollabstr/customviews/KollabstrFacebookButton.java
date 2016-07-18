@@ -20,7 +20,6 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -51,7 +50,7 @@ public class KollabstrFacebookButton extends Button {
     }
 
     private void initButton(){
-        setBackgroundResource(R.drawable.login_facebook);
+        setBackgroundResource(R.drawable.facebook_login);
         setOnClickListener(getLoginClickListener());
     }
 

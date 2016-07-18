@@ -16,7 +16,7 @@ public class ComponentBus {
 
     private static ComponentBus sInstance;
 
-    public static ComponentBus getsInstance(){
+    public static ComponentBus getInstance(){
         if(sInstance == null){
             sInstance = new ComponentBus();
         }
