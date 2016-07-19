@@ -33,24 +33,28 @@ public class ComponentBus {
     }
 
     public void subscribeToComponent(String componentName,Listener listener){
-        if(!mListeners.containsKey(componentName)){
-            mListeners.put(componentName,new ArrayList<ListenerWrapper>());
+        synchronized (this) {
+            if (!mListeners.containsKey(componentName)) {
+                mListeners.put(componentName, new ArrayList<ListenerWrapper>());
+            }
+            mListeners.get(componentName).add(createListenerWrapper(listener));
         }
-        mListeners.get(componentName).add(createListenerWrapper(listener));
     }
 
     public void sendMessageToListeners(String component, Bundle bundle){
-         if(mListeners.containsKey(component)){
-             for(ListenerWrapper listener : mListeners.get(component)){
-                 if(listener.threadID == getUIThreadId() && Thread.currentThread().getId() == getUIThreadId()){
-                    messageUIFromUI(listener,bundle);
-                 }
-                 if(listener.threadID == getUIThreadId() && Thread.currentThread().getId() != getUIThreadId()){
-                     messageUIFromOther(listener,bundle);
-                 }
+        synchronized (this) {
+            if (mListeners.containsKey(component)) {
+                for (ListenerWrapper listener : mListeners.get(component)) {
+                    if (listener.threadID == getUIThreadId() && Thread.currentThread().getId() == getUIThreadId()) {
+                        messageUIFromUI(listener, bundle);
+                    }
+                    if (listener.threadID == getUIThreadId() && Thread.currentThread().getId() != getUIThreadId()) {
+                        messageUIFromOther(listener, bundle);
+                    }
 
-             }
-         }
+                }
+            }
+        }
     }
 
     private void messageUIFromUI(ListenerWrapper listener,Bundle bundle){
@@ -71,6 +75,7 @@ public class ComponentBus {
     }
 
     public interface Listener{
+        String EXTRA_KEY = "extra";
         void receiveMessage(Bundle bundle);
         void receiveMessage(Object object);
     }

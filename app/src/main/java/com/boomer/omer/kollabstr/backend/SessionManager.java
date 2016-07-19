@@ -2,6 +2,7 @@ package com.boomer.omer.kollabstr.backend;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -11,14 +12,14 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.exceptions.BackendlessFault;
 import com.boomer.omer.kollabstr.analytics.AnswersManager;
+import com.boomer.omer.kollabstr.backend.objects.Users;
 import com.boomer.omer.kollabstr.core.ComponentBus;
+import com.boomer.omer.kollabstr.core.KollabstrIntentService;
 import com.boomer.omer.kollabstr.core.ResourceManager;
+import com.boomer.omer.kollabstr.core.ServiceManager;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
@@ -38,8 +39,12 @@ public class SessionManager implements ComponentBus.Listener{
 
     public static final String TAG = SessionManager.class.getSimpleName();
 
-    public static final String LOGIN_SUCCESS = "loginSuccess";
+    public static final String LOGIN_SUCCESS_EVENT = "loginSuccess";
+    public static final String SESSION_UPDATED_EVENT = "sessionSuccess";
 
+
+    public static final String OBJECT_ID_KEY = "objectId";
+    public static final String SESSION_DATA_KEY = "sessionData";
 
     private static SessionManager sSessionManager;
     private static boolean isInitialized = false;
@@ -71,14 +76,19 @@ public class SessionManager implements ComponentBus.Listener{
     public static final String THROUGH_GOOGLE      = "Google";
 
     private ComponentBus mComponentBus;
+    private ServiceManager mServiceManager;
+
     private Context mContext;
 
-    private BackendlessUser mCurrentUser;
+    private Users mCurrentUsers;
 
 
 
     private SessionManager(Context context){
+        mCurrentUsers = null;
         mComponentBus = ComponentBus.getInstance();
+        mComponentBus.subscribeToComponent(SESSION_UPDATED_EVENT,this);
+        mComponentBus.subscribeToComponent(LOGIN_SUCCESS_EVENT,this);
         mContext = context;
 
     }
@@ -88,13 +98,14 @@ public class SessionManager implements ComponentBus.Listener{
 
             @Override
             public void handleResponse(BackendlessUser response) {
-                 mComponentBus.sendMessageToListeners(SessionManager.LOGIN_SUCCESS,null);
-                 mCurrentUser = response;
+                 getComponentBus().sendMessageToListeners(SessionManager.LOGIN_SUCCESS_EVENT,null);
                  AnswersManager.reportLogin(THROUGH_BACKENDLESS);
+                changeSession(response);
             }
 
             @Override
             public void handleFault(BackendlessFault fault) {
+
 
             }
         });
@@ -113,9 +124,9 @@ public class SessionManager implements ComponentBus.Listener{
         Backendless.UserService.loginWithFacebookSdk(activity, propertyMapping, permissions, callbackManager, new AsyncCallback<BackendlessUser>() {
             @Override
             public void handleResponse(BackendlessUser response) {
-                mComponentBus.sendMessageToListeners(SessionManager.LOGIN_SUCCESS,null);
-                mCurrentUser = response;
+                getComponentBus().sendMessageToListeners(SessionManager.LOGIN_SUCCESS_EVENT,null);
                 AnswersManager.reportLogin(THROUGH_FACEBOOK);
+                changeSession(response);
             }
 
             @Override
@@ -132,9 +143,9 @@ public class SessionManager implements ComponentBus.Listener{
         Backendless.UserService.loginWithTwitter(activity, propertyMapping, new AsyncCallback<BackendlessUser>() {
             @Override
             public void handleResponse(BackendlessUser response) {
-                mComponentBus.sendMessageToListeners(SessionManager.LOGIN_SUCCESS,null);
-                mCurrentUser = response;
+                getComponentBus().sendMessageToListeners(SessionManager.LOGIN_SUCCESS_EVENT,null);
                 AnswersManager.reportLogin(THROUGH_TWITTER);
+                changeSession(response);
             }
 
             @Override
@@ -146,31 +157,87 @@ public class SessionManager implements ComponentBus.Listener{
 
     public void loginWithGoogle(){
       // Backendless.UserService.loginWithGooglePlusSdk()
+        //Todo: Implement this
     }
+
+
 
     public boolean isCurrentUserPresent(){
-        return Backendless.UserService.CurrentUser() !=null;
+        return mCurrentUsers != null;
     }
 
-    public BackendlessUser getCurrentUser(){
-        if(isCurrentUserPresent()){return mCurrentUser;}
+    private void changeSession(BackendlessUser backendlessUser){
+        Bundle data = new Bundle();
+        data.putString(OBJECT_ID_KEY,backendlessUser.getObjectId());
+        getServiceManager().startService(SessionService.class,data);
+    }
+
+    public void updateUser(Users user){
+        Backendless.Persistence.save(user, new AsyncCallback<Users>() {
+            @Override
+            public void handleResponse(Users response) {
+                Bundle data = new Bundle();
+                data.putParcelable(EXTRA_KEY,response);
+                getComponentBus().sendMessageToListeners(SESSION_UPDATED_EVENT,data);
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+
+            }
+        });
+    }
+
+    public static class SessionService extends KollabstrIntentService{
+
+
+        public SessionService() {
+            super(TAG);
+        }
+
+        @Override
+        protected void onHandleIntent(Intent intent) {
+            Bundle data = intent.getBundleExtra(EXTRA_KEY);
+            String objectId = data.getString(OBJECT_ID_KEY);
+            Users users = Backendless.Persistence.of(Users.class).findById(objectId);
+            Bundle sessionData = new Bundle();
+            sessionData.putParcelable(SESSION_DATA_KEY, users);
+            this.getComponentBus().sendMessageToListeners(SESSION_UPDATED_EVENT,sessionData);
+        }
+    }
+
+    public Users getCurrentUser(){
+        if(isCurrentUserPresent()){return mCurrentUsers;}
         throw new BackendlessException(TAG + " has no user signed in");
+    }
+
+    private ComponentBus getComponentBus(){
+        if(mComponentBus == null){
+            mComponentBus = ComponentBus.getInstance();
+        }
+        return mComponentBus;
+    }
+
+    private ServiceManager getServiceManager(){
+        if(mServiceManager == null){
+            mServiceManager = ServiceManager.getInstance();
+        }
+        return mServiceManager;
     }
 
 
     @Override
     public void receiveMessage(Bundle bundle) {
-
+        if(bundle == null){return;}
+        if(bundle.containsKey(SESSION_DATA_KEY)){
+            mCurrentUsers = bundle.getParcelable(SESSION_DATA_KEY);
+        }
     }
 
     @Override
     public void receiveMessage(Object object) {
 
     }
-
-
-
-
 
 
 }

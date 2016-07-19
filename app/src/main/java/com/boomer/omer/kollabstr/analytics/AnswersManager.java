@@ -49,7 +49,6 @@ public class AnswersManager {
                         .putMethod(METHOD_BACKENDLESS)
                         .putSuccess(true));
                 break;
-
             case METHOD_FACEBOOK:
                 Answers.getInstance().logLogin(new LoginEvent()
                 .putMethod(METHOD_FACEBOOK)

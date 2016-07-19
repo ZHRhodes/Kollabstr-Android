@@ -38,7 +38,7 @@ public class ServiceManager {
 
     public void startService(Class<? extends KollabstrIntentService> serviceClass,Bundle extra){
         Intent intent = new Intent(sContext,serviceClass);
-        intent.putExtra("extra",extra);
+        intent.putExtra(ComponentBus.Listener.EXTRA_KEY,extra);
         sContext.startService(intent);
     }
 }

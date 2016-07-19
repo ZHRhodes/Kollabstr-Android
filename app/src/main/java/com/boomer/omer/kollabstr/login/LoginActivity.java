@@ -2,7 +2,7 @@ package com.boomer.omer.kollabstr.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,18 +33,31 @@ public class LoginActivity extends KollabstrActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_login);
 
         ((Button)findViewById(R.id.login_button)).setOnClickListener(this);
         ((Button)findViewById(R.id.facebook_login)).setOnClickListener(this);
         ((Button)findViewById(R.id.twitter_login)).setOnClickListener(this);
 
-        getComponentBus().subscribeToComponent(SessionManager.LOGIN_SUCCESS,this);
+        getComponentBus().subscribeToComponent(SessionManager.LOGIN_SUCCESS_EVENT,this);
+        getComponentBus().subscribeToComponent(SessionManager.SESSION_UPDATED_EVENT,this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(getSessionManager().isCurrentUserPresent()){startSettingUpProfile();}
     }
 
     @Override
     public void receiveMessage(Bundle bundle) {
-        startSettingUpProfile();
+        if(bundle == null){return;}
+       if(bundle.containsKey(SessionManager.SESSION_DATA_KEY)){
+           Log.d(TAG,"SESSION SUCCESSFUL");
+           if(getSessionManager().getCurrentUser().getIsProfileSet() == null){startSettingUpProfile();}
+       }
     }
 
     @Override

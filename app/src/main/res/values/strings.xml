@@ -17,15 +17,18 @@
     <string name="app_launch_start_title">Start</string>
     <string name="app_launch_splash_title">Splash</string>
 
-    <!--SetupProfile-->
-    <string name="setup_profile_label">Setup Profile</string>
-
-
     <!--Login -->
     <string name="login_title">Login</string>
     <string name="login_email_hint">E-mail</string>
     <string name="login_password_hint">Password</string>
     <string name="login_button">Login</string>
     <string name="facebook_button">Login with Facebook</string>
+
+    <!--SetupProfile-->
+    <string name="setup_profile_label">Setup Profile</string>
+    <string name="setup_profile_finish_button">Finish</string>
+
+
+
 
 </resources>
