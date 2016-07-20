@@ -14,8 +14,6 @@ public abstract class BackendlessObject implements Parcelable {
     protected Date created;
     protected Date updated;
 
-    public static final int CONTENTS_DESCRIPTION = 0;
-
     public Date getUpdated() {
         return updated;
     }

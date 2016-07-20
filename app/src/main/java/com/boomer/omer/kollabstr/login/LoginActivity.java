@@ -39,7 +39,7 @@ public class LoginActivity extends KollabstrActivity implements View.OnClickList
 
         ((Button)findViewById(R.id.login_button)).setOnClickListener(this);
         ((Button)findViewById(R.id.facebook_login)).setOnClickListener(this);
-        ((Button)findViewById(R.id.twitter_login)).setOnClickListener(this);
+       //((Button)findViewById(R.id.twitter_login)).setOnClickListener(this);
 
         getComponentBus().subscribeToComponent(SessionManager.LOGIN_SUCCESS_EVENT,this);
         getComponentBus().subscribeToComponent(SessionManager.SESSION_UPDATED_EVENT,this);
@@ -81,11 +81,11 @@ public class LoginActivity extends KollabstrActivity implements View.OnClickList
             case R.id.facebook_login:
                 getSessionManager().loginWithFacebook(this,getCallbackManager());
                 break;
-
+/*
             case R.id.twitter_login:
                 getSessionManager().loginWithTwitter(this);
                 break;
-
+*/
             default:
                 //Todo: nothing for now
                 break;
@@ -99,16 +99,9 @@ public class LoginActivity extends KollabstrActivity implements View.OnClickList
         return mCallbackManager;
     }
 
+
     @Override
-    public String getTag() {
+    public String getReportTag() {
         return TAG;
     }
-
-    @Override
-    public String getType() {
-        return TypeActivity;
-    }
-
-
-
 }

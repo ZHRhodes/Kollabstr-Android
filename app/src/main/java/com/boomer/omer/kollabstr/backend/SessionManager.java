@@ -100,7 +100,7 @@ public class SessionManager implements ComponentBus.Listener{
             public void handleResponse(BackendlessUser response) {
                  getComponentBus().sendMessageToListeners(SessionManager.LOGIN_SUCCESS_EVENT,null);
                  AnswersManager.reportLogin(THROUGH_BACKENDLESS);
-                changeSession(response);
+                 changeSession(response);
             }
 
             @Override
@@ -166,6 +166,12 @@ public class SessionManager implements ComponentBus.Listener{
         return mCurrentUsers != null;
     }
 
+    private void createSession(BackendlessUser user){
+        Bundle data = new Bundle();
+        data.putParcelable(SESSION_DATA_KEY,mCurrentUsers);
+        getComponentBus().sendMessageToListeners(SESSION_UPDATED_EVENT,data);
+    }
+
     private void changeSession(BackendlessUser backendlessUser){
         Bundle data = new Bundle();
         data.putString(OBJECT_ID_KEY,backendlessUser.getObjectId());
@@ -177,7 +183,7 @@ public class SessionManager implements ComponentBus.Listener{
             @Override
             public void handleResponse(Users response) {
                 Bundle data = new Bundle();
-                data.putParcelable(EXTRA_KEY,response);
+                data.putParcelable(SESSION_DATA_KEY,response);
                 getComponentBus().sendMessageToListeners(SESSION_UPDATED_EVENT,data);
             }
 

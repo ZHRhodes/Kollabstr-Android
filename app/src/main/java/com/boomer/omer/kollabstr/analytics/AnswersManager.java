@@ -38,7 +38,7 @@ public class AnswersManager {
 
     public static void reportContentView(TrackableView trackable){
         Answers.getInstance().logContentView(new ContentViewEvent()
-        .putContentName(trackable.getTag())
+        .putContentName(trackable.getReportTag())
         .putContentType(trackable.getType()));
     }
 
@@ -72,7 +72,7 @@ public class AnswersManager {
     public interface TrackableView {
         String TypeActivity = "Activity";
         String TypeFragment = "Fragment";
-        String getTag();
+        String getReportTag();
         String getType();
     }
 

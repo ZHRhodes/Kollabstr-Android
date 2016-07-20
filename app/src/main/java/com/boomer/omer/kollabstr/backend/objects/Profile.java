@@ -11,9 +11,6 @@ import java.util.List;
  */
 public class Profile extends BackendlessObject {
 
-    public static final String ACCOUNT_TALENT = "talent";
-    public static final String ACCOUNT_CLIENT = "client";
-    public static final String ACCOUNT_ADMIN  = "admin";
 
     public static Profile createEmpty(){
         Profile profile = new Profile();
@@ -58,7 +55,7 @@ public class Profile extends BackendlessObject {
         }
 
         int followingCount = in.readInt();
-        for(int i = 0;i<followerCount ; i++){
+        for(int i = 0;i<followingCount ; i++){
             following.add(Profile.CREATOR.createFromParcel(in));
         }
 
@@ -103,9 +100,19 @@ public class Profile extends BackendlessObject {
         return socialMediaAccounts;
     }
 
-    public void setSocialMediaAccounts(List<SocialMedia> socialMediaAccounts) {
-        this.socialMediaAccounts = socialMediaAccounts;
-    }
+    public void setSocialMediaAccounts(List<SocialMedia> socialMediaAccounts) {this.socialMediaAccounts = socialMediaAccounts;}
+
+    public void makeAdmin(){accountType = "admin";}
+
+    public boolean isAdmin(){return accountType.equals("admin");}
+
+    public void makeClient(){accountType="client";}
+
+    public boolean isClient(){return accountType.equals("client");}
+
+    public void makeTalent(){accountType = "talent";}
+
+    public boolean isTalent(){return accountType.equals("talent");}
 
     public List<Profile> getFollowers() {
         return followers;

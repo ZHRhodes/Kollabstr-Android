@@ -68,13 +68,8 @@ public class StartScreen extends KollabstrActivity implements View.OnClickListen
     }
 
     @Override
-    public String getTag() {
+    public String getReportTag() {
         return TAG;
-    }
-
-    @Override
-    public String getType() {
-        return TypeActivity;
     }
 
 }

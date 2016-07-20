@@ -6,20 +6,21 @@ import android.os.Parcelable;
 
 import com.backendless.BackendlessUser;
 
+import java.util.Date;
+
 /**
  * Created by Omer on 7/18/2016.
  */
 public class Users extends BackendlessObject {
 
-    public static final String ACCOUNT_TALENT = "talent";
-    public static final String ACCOUNT_CLIENT = "client";
-    public static final String ACCOUNT_ADMIN  = "admin";
 
     public static Users createFrom(BackendlessUser backendlessUser){
         Users users = new Users();
         users.setObjectId(backendlessUser.getObjectId());
         users.setEmail(backendlessUser.getEmail());
         users.setName((String)backendlessUser.getProperty("name"));
+        users.setUpdated((Date)backendlessUser.getProperty("updated"));
+        users.setCreated((Date)backendlessUser.getProperty("created"));
         return users;
     }
 
@@ -37,7 +38,7 @@ public class Users extends BackendlessObject {
         email    = in.readString();
         name     = in.readString();
         accountType = in.readString();
-        isProfileSet = in.readByte()==(int)1? true:false;
+        isProfileSet = in.readByte()==1;
         profile = Profile.CREATOR.createFromParcel(in);
     }
 
@@ -74,6 +75,18 @@ public class Users extends BackendlessObject {
     public void setAccountType(String accountType) {
         this.accountType = accountType;
     }
+
+    public void makeAdmin(){accountType = "admin";}
+
+    public boolean isAdmin(){return accountType.equals("admin");}
+
+    public void makeClient(){accountType="client";}
+
+    public boolean isClient(){return accountType.equals("client");}
+
+    public void makeTalent(){accountType = "talent";}
+
+    public boolean isTalent(){return accountType.equals("talent");}
 
     public Boolean getIsProfileSet() {
         return isProfileSet;

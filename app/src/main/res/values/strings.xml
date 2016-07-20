@@ -26,7 +26,11 @@
 
     <!--SetupProfile-->
     <string name="setup_profile_label">Setup Profile</string>
+    <string name="setup_profile_pick_a_username">Pick a user name...</string>
+    <string name="setup_profile_edit_your_bio">Edit your bio...</string>
+    <string name="setup_profile_add_a_socialmedia">Active social media accounts:</string>
     <string name="setup_profile_finish_button">Finish</string>
+    <string name="setup_profile_impact"> impact</string>
 
 
 

@@ -3,17 +3,16 @@ package com.boomer.omer.kollabstr.backend.objects;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.boomer.omer.kollabstr.core.SocialMediaType;
+
 /**
  * Created by Omer on 7/18/2016.
  */
 public class SocialMedia extends BackendlessObject{
-    private static final String FACEBOOK  = "facebook";
-    private static final String TWITTER   = "twitter;";
-    private static final String INSTAGRAM = "instagram";
-    private static final String YOUTUBE   = "youtube";
 
     private String type;
     private String username;
+    private int impact;
 
     public SocialMedia(){}
 
@@ -22,6 +21,7 @@ public class SocialMedia extends BackendlessObject{
         ownerId  = in.readString();
         type     = in.readString();
         username = in.readString();
+        impact   = in.readInt();
     }
 
     public static final Parcelable.Creator<SocialMedia> CREATOR = new Parcelable.Creator<SocialMedia>() {
@@ -50,6 +50,26 @@ public class SocialMedia extends BackendlessObject{
         this.username = username;
     }
 
+    public int getImpact() { return impact; }
+
+    public void setImpact(int impact) { this.impact = impact; }
+
+    public SocialMediaType getTypeEnum(){
+        switch (type){
+            case "Facebook":
+                return SocialMediaType.FACEBOOK;
+            case "Twitter":
+                return SocialMediaType.TWITTER;
+            case "Instagram":
+                return SocialMediaType.INSTAGRAM;
+            case "Youtube":
+                return  SocialMediaType.YOUTUBE;
+            case "Vine":
+                return SocialMediaType.VINE;
+        }
+        return null;
+    }
+
     @Override
     public int describeContents() {
         return super.describeContents();
@@ -59,5 +79,6 @@ public class SocialMedia extends BackendlessObject{
         super.writeToParcel(parcel, i);
         parcel.writeString(type);
         parcel.writeString(username);
+        parcel.writeInt(impact);
     }
 }

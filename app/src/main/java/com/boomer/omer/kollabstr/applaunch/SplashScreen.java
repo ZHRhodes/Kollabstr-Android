@@ -54,12 +54,8 @@ public class SplashScreen extends KollabstrActivity {
     }
 
     @Override
-    public String getTag() {
+    public String getReportTag() {
         return TAG;
     }
 
-    @Override
-    public String getType() {
-        return TypeActivity;
-    }
 }

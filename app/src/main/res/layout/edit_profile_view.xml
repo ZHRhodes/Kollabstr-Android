@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:id="@+id/setup_profile_profile_image"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="20dp"
+                android:src="@drawable/default_profile"
+                />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/setup_profile_name"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:hint="@string/setup_profile_pick_a_username"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/setup_profile_bio"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:hint="@string/setup_profile_edit_your_bio"
+                android:inputType="textMultiLine"
+                android:ems="10"/>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/setup_profile_socialmedia_stack"
+                    android:orientation="vertical"
+                    >
+
+                    <ImageView
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:id="@+id/setup_profile_add_socialmedia"
+                        android:src="@drawable/add"/>
+
+
+                </LinearLayout>
+            </ScrollView>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/setup_profile_finish"
+                android:text="@string/setup_profile_finish_button"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
