@@ -7,22 +7,26 @@ import com.boomer.omer.kollabstr.R;
  */
 public enum SocialMediaType {
 
-    FACEBOOK("Facebook"),
-    TWITTER("Twitter"),
-    INSTAGRAM("Instagram"),
-    YOUTUBE("Youtube"),
-    VINE("Vine");
+    FACEBOOK("Facebook",0),
+    TWITTER("Twitter",1),
+    INSTAGRAM("Instagram",2),
+    YOUTUBE("Youtube",3),
+    VINE("Vine",4);
 
-    private String typeString;
+    private final String typeString;
+    private final int number;
 
-    SocialMediaType(String type){
+    SocialMediaType(String type,int i){
         this.typeString = type;
+        this.number = i;
     }
 
     @Override
     public String toString(){
        return typeString;
     }
+
+    public int getValue(){return number;}
 
     public int getIcon(){
         switch (this){

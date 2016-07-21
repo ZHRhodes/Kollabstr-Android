@@ -2,20 +2,24 @@ package com.boomer.omer.kollabstr.profile;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.boomer.omer.kollabstr.R;
 import com.boomer.omer.kollabstr.backend.SessionManager;
 import com.boomer.omer.kollabstr.backend.objects.SocialMedia;
 import com.boomer.omer.kollabstr.core.KollabstrFragment;
 import com.boomer.omer.kollabstr.customviews.SocialMediaView;
+
+import org.xmlpull.v1.XmlPullParser;
 
 import java.util.List;
 
@@ -28,8 +32,8 @@ public class EditProfileFragment extends KollabstrFragment implements View.OnCli
 
     private LinearLayout mSocialMediaStack;
 
-    private EditText usernameEditText;
-    private EditText bioEditText;
+    private TextView usernameEditText;
+    private TextView bioEditText;
 
 
     @Override
@@ -49,8 +53,11 @@ public class EditProfileFragment extends KollabstrFragment implements View.OnCli
         ((ImageView)view.findViewById(R.id.setup_profile_add_socialmedia)).setOnClickListener(this);
         ((Button)view.findViewById(R.id.setup_profile_finish)).setOnClickListener(this);
 
-        usernameEditText = (EditText)view.findViewById(R.id.setup_profile_name);
-        bioEditText      = (EditText)view.findViewById(R.id.setup_profile_bio);
+        usernameEditText = (TextView) view.findViewById(R.id.setup_profile_name);
+        bioEditText      = (TextView) view.findViewById(R.id.setup_profile_bio);
+
+        usernameEditText.setOnClickListener(this);
+        bioEditText.setOnClickListener(this);
 
         usernameEditText.setText(getSessionManager().getCurrentUser().getProfile().getUsername());
         bioEditText.setText(getSessionManager().getCurrentUser().getProfile().getBio());
@@ -79,6 +86,10 @@ public class EditProfileFragment extends KollabstrFragment implements View.OnCli
 
     }
 
+    private SetupProfileActivity getSetupProfileActivity(){
+        return (SetupProfileActivity)getKollabstrActivity();
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -88,10 +99,11 @@ public class EditProfileFragment extends KollabstrFragment implements View.OnCli
 
             case R.id.setup_profile_finish:
 
+
                 break;
 
             case R.id.setup_profile_add_socialmedia:
-
+                getSetupProfileActivity().goToFragment(PickSocialMediaFragment.class);
                 break;
         }
     }

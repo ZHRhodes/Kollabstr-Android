@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SocialMediaView">
+
+        <attr name="listImpact" format="boolean"/>
+
+        <attr name="type" format="enum">
+            <enum name="facebook" value="0"/>
+            <enum name="twitter"  value="1"/>
+            <enum name="instagram" value="2"/>
+            <enum name="youtube" value="3"/>
+            <enum name="vine" value="4"/>
+        </attr>
+
+        <attr name="impact" format="integer"/>
+
+    </declare-styleable>
+</resources>

@@ -1,19 +1,20 @@
 package com.boomer.omer.kollabstr.profile;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.boomer.omer.kollabstr.R;
 import com.boomer.omer.kollabstr.backend.SessionManager;
-import com.boomer.omer.kollabstr.backend.objects.Profile;
 import com.boomer.omer.kollabstr.backend.objects.Users;
 import com.boomer.omer.kollabstr.core.KollabstrActivity;
 import com.boomer.omer.kollabstr.core.KollabstrFragment;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 
 /**
@@ -27,15 +28,17 @@ public class SetupProfileActivity extends KollabstrActivity {
 
     private KollabstrFragment mCurrentFragment;
 
+    private FrameLayout mFragmentContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_profile);
 
+        mFragmentContainer = (FrameLayout)findViewById(R.id.setup_profile_fragment_container);
 
         //if(fromScratch()){getCurrentUser().setProfile(Profile.createEmpty());} ///ADJUST
-        EditProfileFragment editProfileFragment = new EditProfileFragment();
-        getFragmentManager().beginTransaction().add(R.id.setup_profile_fragment_container,editProfileFragment).commit();
+       goToFragment(EditProfileFragment.class);
 
 
 
@@ -44,8 +47,55 @@ public class SetupProfileActivity extends KollabstrActivity {
 
     @Override
     public void receiveMessage(Bundle bundle) {
-        Toast.makeText(SetupProfileActivity.this, "Profile Updated!", Toast.LENGTH_SHORT).show();
         updateCurrentUser();
+    }
+
+    private void showFragment(Class<? extends KollabstrFragment> fragment){
+        Constructor<?> constructor = null;
+        Object instance = null;
+        try {
+            constructor = fragment.getConstructor();
+            instance    = constructor.newInstance();
+        } catch (NoSuchMethodException e) {e.printStackTrace();} catch (IllegalAccessException e) {
+            e.printStackTrace();} catch (InstantiationException e) {e.printStackTrace();} catch (InvocationTargetException e) {e.printStackTrace();
+        } finally {
+            KollabstrFragment kollabstrFragment = (KollabstrFragment)instance;
+            mFragmentContainer.removeAllViews();
+            getFragmentManager().beginTransaction().add(R.id.setup_profile_fragment_container,kollabstrFragment).commit();
+            mCurrentFragment = kollabstrFragment;
+        }
+    }
+
+    public void goToFragment(Class<? extends KollabstrFragment> fragment){
+        showFragment(fragment);
+        getFragmentBackStack().push(fragment);
+    }
+
+
+
+    public void goToPreviousFragment(){
+        if(getFragmentBackStack().size() > 1){
+            if(mCurrentFragment.getClass().equals(getFragmentBackStack().peek())){getFragmentBackStack().pop();}
+            showFragment(getFragmentBackStack().pop());
+            //getFragmentManager().popBackStack();
+        }else{
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG,"Back Event");
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+           goToPreviousFragment();
+            return true;
+        }else{
+            return super.onKeyDown(keyCode, event);
+        }
     }
 
     @Override
