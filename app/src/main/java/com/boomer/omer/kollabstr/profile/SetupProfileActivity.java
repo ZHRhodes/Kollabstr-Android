@@ -1,5 +1,6 @@
 package com.boomer.omer.kollabstr.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 import com.boomer.omer.kollabstr.R;
 import com.boomer.omer.kollabstr.backend.SessionManager;
 import com.boomer.omer.kollabstr.backend.objects.Users;
+import com.boomer.omer.kollabstr.backend.twitteroauth.TwitterManager;
 import com.boomer.omer.kollabstr.core.KollabstrActivity;
 import com.boomer.omer.kollabstr.core.KollabstrFragment;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
@@ -29,6 +31,14 @@ public class SetupProfileActivity extends KollabstrActivity {
     private KollabstrFragment mCurrentFragment;
 
     private FrameLayout mFragmentContainer;
+
+    private TwitterManager mTwitterManager;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getTwitterManager().onActivityResult(requestCode,resultCode,data);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,5 +137,15 @@ public class SetupProfileActivity extends KollabstrActivity {
         return  mCurrentFragment;
     }
 
+    public void doTwitterLogin(){
+        getTwitterManager().logNewSession();
+    }
+
+    private TwitterManager getTwitterManager(){
+        if(mTwitterManager==null){
+            mTwitterManager = new TwitterManager(this);
+        }
+        return  mTwitterManager;
+    }
 
 }

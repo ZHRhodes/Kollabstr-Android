@@ -1,5 +1,6 @@
 package com.boomer.omer.kollabstr.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.boomer.omer.kollabstr.R;
+import com.boomer.omer.kollabstr.backend.twitteroauth.TwitterManager;
 import com.boomer.omer.kollabstr.core.KollabstrFragment;
 import com.boomer.omer.kollabstr.customviews.SocialMediaView;
 
@@ -18,6 +20,8 @@ public class PickSocialMediaFragment extends KollabstrFragment implements View.O
     private static final String TAG = PickSocialMediaFragment.class.getSimpleName();
 
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,6 +31,7 @@ public class PickSocialMediaFragment extends KollabstrFragment implements View.O
         ((SocialMediaView)view.findViewById(R.id.twitter_item)).setOnClickListener(this);
         ((SocialMediaView)view.findViewById(R.id.instagram_item)).setOnClickListener(this);
         ((SocialMediaView)view.findViewById(R.id.youtube_item)).setOnClickListener(this);
+
 
         return view;
     }
@@ -54,7 +59,7 @@ public class PickSocialMediaFragment extends KollabstrFragment implements View.O
                 break;
 
             case R.id.twitter_item:
-
+               getSetupProfileActivity().doTwitterLogin();
                 break;
 
             case R.id.instagram_item:
@@ -66,6 +71,11 @@ public class PickSocialMediaFragment extends KollabstrFragment implements View.O
                 break;
         }
     }
+
+    private SetupProfileActivity getSetupProfileActivity(){
+        return (SetupProfileActivity)getKollabstrActivity();
+    }
+
 
 
 }

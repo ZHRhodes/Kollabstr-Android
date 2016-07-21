@@ -81,4 +81,10 @@ public class SocialMedia extends BackendlessObject{
         parcel.writeString(username);
         parcel.writeInt(impact);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj){return true;}
+        return this.getType().equals(((SocialMedia)obj).getType()) && this.getUsername().equals(((SocialMedia)obj).getUsername());
+    }
 }

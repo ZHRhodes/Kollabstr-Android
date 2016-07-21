@@ -54,10 +54,9 @@ public class LoginActivity extends KollabstrActivity implements View.OnClickList
     @Override
     public void receiveMessage(Bundle bundle) {
         if(bundle == null){return;}
-       if(bundle.containsKey(SessionManager.SESSION_DATA_KEY)){
-           Log.d(TAG,"SESSION SUCCESSFUL");
+        if(bundle.containsKey(SessionManager.SESSION_DATA_KEY)){
            if(getSessionManager().getCurrentUser().getIsProfileSet() == null){startSettingUpProfile();}
-       }
+        }
     }
 
     @Override
